@@ -7,6 +7,13 @@
 config.yaml
 *.local.yaml
 
+# Web App Environment
+.env
+.flaskenv
+instance/
+*.db
+*.sqlite
+
 # ============================================================
 # Output Directories
 # ============================================================

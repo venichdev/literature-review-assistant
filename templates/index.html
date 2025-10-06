@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literature Review Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-book-reader"></i>
+                <h1>Literature Review Assistant</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="loadConfig()">
+                    <i class="fas fa-folder-open"></i> Load Config
+                </button>
+                <button class="btn btn-secondary" onclick="viewOutputs()">
+                    <i class="fas fa-file-alt"></i> View Outputs
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('basic')">
+                    <i class="fas fa-info-circle"></i> Basic Info
+                </button>
+                <button class="tab-btn" onclick="showTab('keywords')">
+                    <i class="fas fa-key"></i> Keywords
+                </button>
+                <button class="tab-btn" onclick="showTab('filters')">
+                    <i class="fas fa-filter"></i> Filters
+                </button>
+                <button class="tab-btn" onclick="showTab('criteria')">
+                    <i class="fas fa-check-circle"></i> Criteria
+                </button>
+                <button class="tab-btn" onclick="showTab('output')">
+                    <i class="fas fa-download"></i> Output
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form id="reviewForm">
+                <!-- Basic Info Tab -->
+                <div class="tab-content active" id="basic-tab">
+                    <div class="form-section">
+                        <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
+
+                        <div class="form-group">
+                            <label for="project_name">Project Name *</label>
+                            <input type="text" id="project_name" name="project_name" required
+                                   placeholder="e.g., MPC for Autonomous Vehicles Review">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="researcher">Researcher Name</label>
+                            <input type="text" id="researcher" name="researcher"
+                                   placeholder="Your name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="institution">Institution</label>
+                            <input type="text" id="institution" name="institution"
+                                   placeholder="Your institution">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="research_question">Research Question *</label>
+                            <textarea id="research_question" name="research_question" rows="4" required
+                                      placeholder="What are the current state-of-the-art approaches..."></textarea>
+                            <small>Be specific and focused</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sub_questions">Sub-Questions (one per line)</label>
+                            <textarea id="sub_questions" name="sub_questions" rows="3"
+                                      placeholder="How do different approaches compare?&#10;What are the main challenges?"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" rows="3"
+                                      placeholder="Brief description of your literature review project"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keywords Tab -->
+                <div class="tab-content" id="keywords-tab">
+                    <div class="form-section">
+                        <h2><i class="fas fa-key"></i> Keywords & Search Terms</h2>
+
+                        <div class="form-group">
+                            <label for="primary_keywords">Primary Keywords (one per line) *</label>
+                            <textarea id="primary_keywords" name="primary_keywords" rows="4" required
+                                      placeholder="model predictive control&#10;MPC&#10;autonomous vehicle"></textarea>
+                            <small>Must include all of these</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="secondary_keywords">Secondary Keywords (one per line)</label>
+                            <textarea id="secondary_keywords" name="secondary_keywords" rows="4"
+                                      placeholder="trajectory planning&#10;path planning&#10;vehicle control"></textarea>
+                            <small>Should include some of these</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="optional_keywords">Optional Keywords (one per line)</label>
+                            <textarea id="optional_keywords" name="optional_keywords" rows="3"
+                                      placeholder="receding horizon&#10;optimal control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="search_string">Boolean Search String (Advanced)</label>
+                            <textarea id="search_string" name="search_string" rows="3"
+                                      placeholder='("model predictive control" OR "MPC") AND ("autonomous vehicle")'></textarea>
+                            <small>Optional: custom boolean search query</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Databases to Search</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="db_google_scholar" checked> Google Scholar</label>
+                                <label><input type="checkbox" name="db_ieee" checked> IEEE Xplore</label>
+                                <label><input type="checkbox" name="db_sciencedirect" checked> ScienceDirect</label>
+                                <label><input type="checkbox" name="db_springer"> SpringerLink</label>
+                                <label><input type="checkbox" name="db_arxiv"> arXiv</label>
+                                <label><input type="checkbox" name="db_acm"> ACM Digital Library</label>
+                                <label><input type="checkbox" name="db_scopus"> Scopus</label>
+                                <label><input type="checkbox" name="db_wos"> Web of Science</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters Tab -->
+                <div class="tab-content" id="filters-tab">
+                    <div class="form-section">
+                        <h2><i class="fas fa-filter"></i> Filters & Scope</h2>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="year_start">Start Year *</label>
+                                <input type="number" id="year_start" name="year_start" value="2020" required min="1900" max="2030">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="year_end">End Year *</label>
+                                <input type="number" id="year_end" name="year_end" value="2025" required min="1900" max="2030">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="min_citations">Minimum Citations</label>
+                                <input type="number" id="min_citations" name="min_citations" value="10" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="min_citations_recent">Min Citations (Recent Papers)</label>
+                                <input type="number" id="min_citations_recent" name="min_citations_recent" value="5" min="0">
+                                <small>For papers less than 2 years old</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="target_papers">Target Number of Papers *</label>
+                                <input type="number" id="target_papers" name="target_papers" value="40" required min="1">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="max_papers">Maximum Papers</label>
+                                <input type="number" id="max_papers" name="max_papers" value="60" min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="prioritize_recent" checked>
+                                Prioritize Recent Papers
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="include_foundational" checked>
+                                Include Highly-Cited Foundational Papers (even if older)
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="preferred_venues">Preferred Journals/Conferences (one per line)</label>
+                            <textarea id="preferred_venues" name="preferred_venues" rows="4"
+                                      placeholder="IEEE Transactions on Intelligent Transportation Systems&#10;Automatica"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Criteria Tab -->
+                <div class="tab-content" id="criteria-tab">
+                    <div class="form-section">
+                        <h2><i class="fas fa-check-circle"></i> Inclusion & Exclusion Criteria</h2>
+
+                        <div class="form-group">
+                            <label for="inclusion_criteria">Inclusion Criteria (one per line)</label>
+                            <textarea id="inclusion_criteria" name="inclusion_criteria" rows="6"
+                                      placeholder="Peer-reviewed publication&#10;English language&#10;Full-text available&#10;Contains experimental validation">Peer-reviewed publication
+English language
+Full-text available
+Contains experimental validation or simulation results</textarea>
+                            <small>Papers MUST meet ALL of these criteria</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exclusion_criteria">Exclusion Criteria (one per line)</label>
+                            <textarea id="exclusion_criteria" name="exclusion_criteria" rows="6"
+                                      placeholder="Non-English papers&#10;Papers without quantitative results&#10;Purely theoretical work">Non-English papers
+Papers without quantitative results
+Purely theoretical work without application context
+Review papers
+Patents or technical reports</textarea>
+                            <small>Exclude papers that meet ANY of these criteria</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thematic_categories">Thematic Categories (one per line)</label>
+                            <textarea id="thematic_categories" name="thematic_categories" rows="4"
+                                      placeholder="Algorithm design&#10;Real-time implementation&#10;Experimental validation"></textarea>
+                            <small>Optional: analyze papers by these themes</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="technical_details">Technical Details to Extract (one per line)</label>
+                            <textarea id="technical_details" name="technical_details" rows="4"
+                                      placeholder="Algorithm complexity&#10;Computation time&#10;Hardware platform"></textarea>
+                            <small>Specific technical information to track</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Tab -->
+                <div class="tab-content" id="output-tab">
+                    <div class="form-section">
+                        <h2><i class="fas fa-download"></i> Output Preferences</h2>
+
+                        <div class="form-group">
+                            <label>Output Formats</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="output_markdown" checked> Markdown</label>
+                                <label><input type="checkbox" name="output_bibtex" checked> BibTeX</label>
+                                <label><input type="checkbox" name="output_csv"> CSV</label>
+                                <label><input type="checkbox" name="output_json"> JSON</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="citation_style">Citation Style</label>
+                            <select id="citation_style" name="citation_style">
+                                <option value="IEEE" selected>IEEE</option>
+                                <option value="APA">APA</option>
+                                <option value="Chicago">Chicago</option>
+                                <option value="Harvard">Harvard</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="generate_visualizations" checked>
+                                Generate Visualizations
+                            </label>
+                        </div>
+
+                        <div class="form-group" style="margin-left: 25px;">
+                            <label>Visualization Types</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="viz_timeline" checked> Timeline</label>
+                                <label><input type="checkbox" name="viz_keywords" checked> Keyword Frequency</label>
+                                <label><input type="checkbox" name="viz_citation"> Citation Network</label>
+                                <label><input type="checkbox" name="viz_methodology"> Methodology Distribution</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="cross_reference" checked>
+                                Cross-Reference with Existing Knowledge Base
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveConfig()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="generatePrompt()">
+                        <i class="fas fa-file-alt"></i> Generate Prompt
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="startReview()">
+                        <i class="fas fa-play"></i> Start Review
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Output Modal -->
+        <div id="outputModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Output</h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <pre id="modalContent"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    <button class="btn btn-primary" onclick="copyToClipboard()">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outputs List Modal -->
+        <div id="outputsListModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h2>Generated Outputs</h2>
+                    <span class="close" onclick="closeOutputsList()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="outputsList"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeOutputsList()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
