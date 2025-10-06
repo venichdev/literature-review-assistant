@@ -1,0 +1,234 @@
+# Literature Review Configuration File
+# Copy this file to 'config.yaml' and customize for your research project
+# DO NOT commit config.yaml with sensitive or personal information
+
+# ============================================================
+# PROJECT INFORMATION
+# ============================================================
+project_name: "Model Predictive Control for Autonomous Vehicles"
+description: "Systematic review of MPC applications in autonomous driving"
+researcher: "Your Name"
+institution: "Your Institution"
+date_started: "2025-10-06"
+
+# ============================================================
+# RESEARCH QUESTION
+# ============================================================
+research_question: |
+  What are the current state-of-the-art Model Predictive Control (MPC)
+  approaches for autonomous vehicle trajectory planning and control?
+
+# Sub-questions (optional)
+sub_questions:
+  - "How do different MPC formulations compare in real-time performance?"
+  - "What are the main challenges in implementing MPC for autonomous vehicles?"
+  - "Which MPC approaches have been validated in real-world testing?"
+
+# ============================================================
+# SEARCH PARAMETERS
+# ============================================================
+keywords:
+  primary:
+    - "model predictive control"
+    - "MPC"
+    - "autonomous vehicle"
+    - "self-driving car"
+
+  secondary:
+    - "trajectory planning"
+    - "path planning"
+    - "vehicle control"
+    - "motion planning"
+
+  optional:
+    - "receding horizon"
+    - "optimal control"
+    - "ADAS"
+
+# Boolean search string (advanced)
+search_string: |
+  ("model predictive control" OR "MPC") AND
+  ("autonomous vehicle" OR "self-driving" OR "automated driving") AND
+  ("trajectory" OR "path planning" OR "motion control")
+
+# ============================================================
+# TEMPORAL SCOPE
+# ============================================================
+year_range:
+  start: 2020
+  end: 2025
+
+# Focus on recent papers
+prioritize_recent: true
+
+# Include seminal/highly-cited older papers
+include_foundational: true
+foundational_year_threshold: 2015
+foundational_citation_threshold: 100
+
+# ============================================================
+# QUALITY FILTERS
+# ============================================================
+min_citations: 10
+
+# For recent papers (< 2 years old), use lower threshold
+min_citations_recent: 5
+
+# Journal/Conference quality
+publication_types:
+  - "peer-reviewed journal"
+  - "conference proceeding"
+  - "preprint (if highly cited)"
+
+# Specific venues (optional - leave empty for all)
+preferred_venues:
+  - "IEEE Transactions on Intelligent Transportation Systems"
+  - "IEEE Transactions on Control Systems Technology"
+  - "Automatica"
+  - "IEEE/RSJ IROS"
+  - "IEEE Intelligent Vehicles Symposium"
+
+# ============================================================
+# SCOPE & SCALE
+# ============================================================
+target_papers: 40
+max_papers: 60
+min_papers: 30
+
+# Diversity
+include_diverse_perspectives: true
+max_papers_per_author: 3
+max_papers_per_institution: 5
+
+# ============================================================
+# DATABASES TO SEARCH
+# ============================================================
+databases:
+  - "Google Scholar"
+  - "IEEE Xplore"
+  - "ScienceDirect"
+  - "SpringerLink"
+  - "arXiv"
+  - "ACM Digital Library"
+  - "Scopus"
+  - "Web of Science"
+
+# ============================================================
+# INCLUSION CRITERIA
+# ============================================================
+inclusion_criteria:
+  - "Peer-reviewed publication"
+  - "English language"
+  - "Full-text available"
+  - "Contains experimental validation or simulation results"
+  - "Focuses on vehicle-level control (not traffic-level)"
+  - "Addresses MPC or related optimal control methods"
+
+# ============================================================
+# EXCLUSION CRITERIA
+# ============================================================
+exclusion_criteria:
+  - "Non-English papers"
+  - "Papers without quantitative results"
+  - "Purely theoretical work without application context"
+  - "Review papers (handle separately)"
+  - "Patents or technical reports"
+  - "Papers focused solely on sensor fusion or perception"
+  - "Traffic flow optimization (macro-level)"
+
+# ============================================================
+# SPECIAL FOCUS AREAS (optional)
+# ============================================================
+thematic_categories:
+  - "MPC formulation (linear, nonlinear, robust, stochastic)"
+  - "Real-time implementation and computational efficiency"
+  - "Obstacle avoidance and safety constraints"
+  - "Multi-vehicle coordination"
+  - "Hardware-in-the-loop validation"
+  - "Real-world deployment and testing"
+
+# Technical aspects to track
+technical_details:
+  - "Prediction horizon length"
+  - "Control frequency / sampling time"
+  - "Vehicle model complexity"
+  - "Solver used"
+  - "Computation time"
+  - "Test platform (simulation/hardware)"
+
+# ============================================================
+# OUTPUT PREFERENCES
+# ============================================================
+output_format:
+  - "markdown"
+  - "bibtex"
+  - "csv"
+  - "json"
+
+# Citation style
+citation_style: "IEEE"  # Options: IEEE, APA, Chicago, Harvard
+
+# Table format
+table_format: "markdown"  # Options: markdown, csv, latex
+
+# Visualization
+generate_visualizations: true
+visualization_types:
+  - "timeline"
+  - "keyword_frequency"
+  - "citation_network"
+  - "methodology_distribution"
+
+# ============================================================
+# FILE ORGANIZATION
+# ============================================================
+output_directory: "./outputs"
+
+subdirectories:
+  summaries: "./outputs/summaries"
+  tables: "./outputs/tables"
+  detailed_notes: "./outputs/detailed_notes"
+  bibliography: "./outputs/bibliography"
+  visualizations: "./outputs/visualizations"
+
+# Naming convention for paper notes
+paper_note_template: "paper_{number:03d}_{first_author}_{year}.md"
+
+# ============================================================
+# INTEGRATION WITH EXISTING KNOWLEDGE
+# ============================================================
+knowledge_base:
+  enabled: true
+  directory: "./theory_and_references"
+  files:
+    - "mathematic_model.md"
+    - "references.md"
+
+# Cross-reference new findings with existing knowledge
+cross_reference: true
+
+# ============================================================
+# ADDITIONAL SETTINGS
+# ============================================================
+
+# Automation level
+auto_download_pdfs: false  # Requires manual PDF collection
+auto_extract_text: true
+auto_generate_summaries: true
+
+# Quality control
+human_review_required: true
+verify_citations: true
+flag_low_quality: true
+
+# Version control
+track_changes: true
+backup_frequency: "daily"
+
+# ============================================================
+# NOTES
+# ============================================================
+# - Customize this file based on your specific research needs
+# - Keep sensitive information out of version control
+# - Update parameters iteratively based on search results
+# - Document any changes to search strategy
